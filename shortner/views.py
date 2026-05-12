@@ -30,9 +30,10 @@ def create_short_url_view(request):
         url.short_code = encode(url.id)
         url.save()
         set_original_url(url.short_code, url.original_url)
+        
         return Response({
             "short_code": url.short_code,
-            "short_url": f"http://127.0.0.1:8000/api/{url.short_code}"
+            "short_url": request.build_absolute_uri(f"/api/{url.short_code}")
         })
 
     return Response(serializer.errors, status=400)
